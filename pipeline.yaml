@@ -1,0 +1,55 @@
+trigger:
+  branches:
+    include:
+    - feature/*
+    - development
+    - release/*
+    - master
+
+parameters:
+  - name: forceRunIntegrationTests
+    displayName: Executar Testes Integrados
+    type: boolean
+    default: false
+  - name: deployBranch
+    displayName: Realizar Deploy da Branch (Não master)
+    type: boolean
+    default: false
+
+resources:
+  repositories:
+  - repository: REFERENCIA
+    name: REFERENCIA
+    type: git
+
+stages:
+- template: ci/java/build.yml@REFERENCIA
+  parameters:
+    pool: 'dev'
+    javaVersion: '17'
+    applicationName: 'api-gerar-carta-cobranca'
+    groupName: 'NOME_DO_GRUPO'
+
+- template: cd/stage-dev.yml@REFERENCIA
+  parameters:
+    applicationName: 'api-gerar-carta-cobranca'
+    groupName: 'NOME_DO_GRUPO'
+    environmentName: 'dev'
+    deployBranch: ${{ parameters.deployBranch }}
+    poolName: 'dev'
+
+- template: cd/stage-hml.yml@REFERENCIA
+  parameters:
+    applicationName: 'api-gerar-carta-cobranca'
+    groupName: 'NOME_DO_GRUPO'
+    environmentName: 'hml'
+    deployBranch: ${{ parameters.deployBranch }}
+    poolName: 'Hml'
+    
+- template: cd/stage-prd.yml@REFERENCIA
+  parameters:
+    applicationName: 'api-gerar-carta-cobranca'
+    groupName: 'NOME_DO_GRUPO'
+    environmentName: 'prd'
+    deployBranch: ${{ parameters.deployBranch }}
+    poolName: 'Prod'

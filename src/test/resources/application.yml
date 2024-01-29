@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: api-gerar-carta-cobranca
+  cloud:
+    config:
+      enabled: false
+      fail-fast: true

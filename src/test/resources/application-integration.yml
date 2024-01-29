@@ -1,0 +1,6 @@
+spring:
+  config:
+    import: "ENDEREÇO_SERVIDOR"
+  cloud:
+    config:
+      enabled: true

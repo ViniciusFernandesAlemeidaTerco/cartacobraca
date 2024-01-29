@@ -1,0 +1,6 @@
+spring:
+  config:
+    import: "optional:configserver:http://ENDERECO_DO_SERVER"
+  cloud:
+    config:
+      enabled: true
